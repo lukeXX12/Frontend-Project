@@ -15,41 +15,43 @@ document.querySelectorAll(".nav-links li a").forEach((link) => {
   });
 });
 
-form.addEventListener("submit", function (e) {
-  e.preventDefault();
+if (form) {
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
 
-  const place = document.getElementById("place").value;
-  const checkin = document.getElementById("checkin").value;
-  const checkout = document.getElementById("checkout").value;
-  const persons = document.getElementById("persons").value;
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
+    const place = document.getElementById("place").value;
+    const checkin = document.getElementById("checkin").value;
+    const checkout = document.getElementById("checkout").value;
+    const persons = document.getElementById("persons").value;
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
 
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const passwordRegex = /^(?=.*\d).{8,}$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const passwordRegex = /^(?=.*\d).{8,}$/;
 
-  if (!place || !checkin || !checkout || !persons || !email || !password) {
-    errorMsg.style.color = "red";
-    errorMsg.textContent = "fill in all fields!";
-    return;
-  }
+    if (!place || !checkin || !checkout || !persons || !email || !password) {
+      errorMsg.style.color = "red";
+      errorMsg.textContent = "fill in all fields!";
+      return;
+    }
 
-  if (!emailRegex.test(email)) {
-    errorMsg.style.color = "red";
-    errorMsg.textContent = "Invalid email format!";
-    return;
-  }
+    if (!emailRegex.test(email)) {
+      errorMsg.style.color = "red";
+      errorMsg.textContent = "Invalid email format!";
+      return;
+    }
 
-  if (!passwordRegex.test(password)) {
-    errorMsg.style.color = "red";
-    errorMsg.textContent =
-      "Password must be at least 8 characters and include a number!";
-    return;
-  }
+    if (!passwordRegex.test(password)) {
+      errorMsg.style.color = "red";
+      errorMsg.textContent =
+        "Password must be at least 8 characters and include a number!";
+      return;
+    }
 
-  errorMsg.style.color = "green";
-  errorMsg.textContent = "Booking successful ✅";
-});
+    errorMsg.style.color = "green";
+    errorMsg.textContent = "Booking successful ✅";
+  });
+}
 
 const weatherIcons = {
   0: "☀️",
@@ -145,21 +147,23 @@ const cookieNotification = document.getElementById("cookieNotification");
 const acceptBtn = document.getElementById("acceptCookies");
 const rejectBtn = document.getElementById("rejectCookies");
 
-function checkCookieConsent() {
-  const cookieConsent = localStorage.getItem("cookieConsent");
-  if (cookieConsent) {
-    cookieNotification.classList.add("hidden");
+if (cookieNotification && acceptBtn && rejectBtn) {
+  function checkCookieConsent() {
+    const cookieConsent = localStorage.getItem("cookieConsent");
+    if (cookieConsent) {
+      cookieNotification.classList.add("hidden");
+    }
   }
+
+  acceptBtn.addEventListener("click", () => {
+    localStorage.setItem("cookieConsent", "accepted");
+    cookieNotification.classList.add("hidden");
+  });
+
+  rejectBtn.addEventListener("click", () => {
+    localStorage.setItem("cookieConsent", "rejected");
+    cookieNotification.classList.add("hidden");
+  });
+
+  window.addEventListener("load", checkCookieConsent);
 }
-
-acceptBtn.addEventListener("click", () => {
-  localStorage.setItem("cookieConsent", "accepted");
-  cookieNotification.classList.add("hidden");
-});
-
-rejectBtn.addEventListener("click", () => {
-  localStorage.setItem("cookieConsent", "rejected");
-  cookieNotification.classList.add("hidden");
-});
-
-window.addEventListener("load", checkCookieConsent);
